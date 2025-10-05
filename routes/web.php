@@ -10,6 +10,11 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::middleware(['auth'])->group(function () {
+    Route::resource('clientes', ClienteController::class);
+    Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
+});
+
 // CRUD Clientes
 Route::resource('clientes', ClienteController::class)->middleware('auth');
 
