@@ -1,23 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Nuevo Cliente</h1>
-    <form action="{{ route('clientes.store') }}" method="POST">
+<div class="container mt-4 text-white">
+    <h1>Registrar Cliente</h1>
+
+    <form action="{{ route('clientes.store') }}" method="POST" class="form-cliente">
         @csrf
-        <div class="mb-3">
-            <label>Nombre</label>
-            <input type="text" name="nombre" class="form-control" required>
+
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre" required>
         </div>
-        <div class="mb-3">
-            <label>Teléfono</label>
-            <input type="text" name="telefono" class="form-control">
+
+        <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" name="telefono" id="telefono" required>
         </div>
-        <div class="mb-3">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control" required>
+
+        <div class="form-group">
+            <label for="email">Correo</label>
+            <input type="email" name="email" id="email" required>
         </div>
-        <button class="btn btn-success">Guardar</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-guardar">Guardar</button>
+            <a href="{{ route('clientes.index') }}" class="btn btn-cancelar">Cancelar</a>
+        </div>
     </form>
 </div>
 @endsection
