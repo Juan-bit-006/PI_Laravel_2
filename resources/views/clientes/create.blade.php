@@ -36,14 +36,20 @@
             >
         </div>
 
-        <div class="flex justify-center">
-            <button 
-                type="submit" 
-                class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200"
-            >
-                Guardar
-            </button>
-        </div>
+        <div class="flex justify-between mt-6">
+    <a href="{{ route('clientes.index') }}" 
+       class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">
+        Cancelar
+    </a>
+
+    <button 
+        type="submit" 
+        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200"
+    >
+        Guardar
+    </button>
+</div>
+
     </form>
 </div>
 @endsection

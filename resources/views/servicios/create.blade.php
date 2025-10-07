@@ -27,8 +27,8 @@
 				@error('duracion')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
 			</div>
 			<div class="flex justify-between">
-				<a href="{{ route('servicios.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancelar</a>
-				<button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Guardar</button>
+				<a href="{{ route('servicios.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">Cancelar</a>
+				<button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-200">Guardar</button>
 			</div>
 		</form>
 	</div>

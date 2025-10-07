@@ -17,9 +17,10 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('clientes', ClienteController::class);
+    Route::resource('clientes', ClienteController::class)->middleware('auth');
     Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
-    Route::resource('servicios', ServicioController::class);
+    Route::resource('servicios', ServicioController::class)->middleware('auth');
+    Route::resource('reservas', ReservaController::class)->middleware('auth');
 
     // si usas PDF
     Route::get('servicios-pdf', [\App\Http\Controllers\ServicioController::class, 'pdf'])->name('servicios.pdf');

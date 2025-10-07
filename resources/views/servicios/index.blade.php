@@ -24,6 +24,7 @@
                     <th class="px-4 py-2 text-left border-b">Nombre</th>
                     <th class="px-4 py-2 text-left border-b">Descripción</th>
                     <th class="px-4 py-2 text-left border-b">Precio</th>
+					<th class="px-4 py-2 border-b">Duración</th>
                     <th class="px-4 py-2 text-center border-b">Acciones</th>
                 </tr>
             </thead>
@@ -34,6 +35,7 @@
                     <td class="px-4 py-2 border-b">{{ $servicio->nombre }}</td>
                     <td class="px-4 py-2 border-b">{{ $servicio->descripcion }}</td>
                     <td class="px-4 py-2 border-b">${{ number_format($servicio->precio, 2) }}</td>
+					<td class="px-4 py-2 border-b">{{ $servicio->duracion }} min</td>
                     <td class="px-4 py-2 border-b text-center space-x-2">
                         <a href="{{ route('servicios.edit', $servicio) }}" 
                            class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm font-medium transition duration-200">

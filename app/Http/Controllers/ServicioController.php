@@ -8,17 +8,16 @@ use Illuminate\Http\Request;
 class ServicioController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar listado de servicios
      */
     public function index()
     {
-        //
         $servicios = Servicio::all();
         return view('servicios.index', compact('servicios'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar formulario de creación
      */
     public function create()
     {
@@ -26,42 +25,61 @@ class ServicioController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guardar un nuevo servicio
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'nombre'      => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio'      => 'required|numeric|min:0',
+            'duracion'    => 'required|integer|min:1',
+        ]);
+
+        Servicio::create($request->all());
+        return redirect()->route('servicios.index')->with('success', 'Servicio creado con éxito.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Servicio $servicio)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Mostrar formulario de edición
      */
     public function edit(Servicio $servicio)
     {
-        return view('servicios.edit', compact('servicios'));
+        return view('servicios.edit', compact('servicio'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar un servicio
      */
     public function update(Request $request, Servicio $servicio)
     {
-        //
+        $request->validate([
+            'nombre'      => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'precio'      => 'required|numeric|min:0',
+            'duracion'    => 'required|integer|min:1',
+        ]);
+
+        $servicio->update($request->all());
+        return redirect()->route('servicios.index')->with('success', 'Servicio actualizado con éxito.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un servicio
      */
     public function destroy(Servicio $servicio)
     {
-        //
+        $servicio->delete();
+        return redirect()->route('servicios.index')->with('success', 'Servicio eliminado con éxito.');
+    }
+
+    /**
+     * Exportar listado de servicios a PDF
+     */
+    public function exportPdf()
+    {
+        $servicios = Servicio::all();
+        $pdf = Pdf::loadView('servicios.pdf', compact('servicios'));
+        return $pdf->download('servicios.pdf');
     }
 }

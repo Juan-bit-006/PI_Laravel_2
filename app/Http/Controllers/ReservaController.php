@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reserva;
+use App\Models\Cliente;
+use App\Models\Servicio;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReservaController extends Controller
@@ -12,15 +15,21 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $reservas = Reserva::with(['cliente', 'servicio', 'user'])->get();
+        return view('reservas.index', compact('reservas'));
+        
+    } 
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        $clientes = Cliente::all();
+        $servicios = Servicio::all();
+        $usuarios = User::all(); // aquí podrías filtrar solo estilistas si usas roles
+
+        return view('reservas.create', compact('clientes', 'servicios', 'usuarios'));
     }
 
     /**
@@ -29,6 +38,18 @@ class ReservaController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+        'cliente_id' => 'required|exists:clientes,id',
+        'servicio_id' => 'required|exists:servicios,id',
+        'user_id'    => 'required|exists:users,id',
+        'fecha'      => 'required|date|after_or_equal:today',
+        'hora'       => 'required',
+        'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
+    ]);
+
+    Reserva::create($request->all());
+
+    return redirect()->route('reservas.index')->with('success', 'Reserva creada con éxito.');
     }
 
     /**
@@ -44,7 +65,11 @@ class ReservaController extends Controller
      */
     public function edit(Reserva $reserva)
     {
-        //
+        $clientes = Cliente::all();
+        $servicios = Servicio::all();
+        $usuarios = User::all();
+
+        return view('reservas.edit', compact('reserva', 'clientes', 'servicios', 'usuarios'));
     }
 
     /**
@@ -52,7 +77,18 @@ class ReservaController extends Controller
      */
     public function update(Request $request, Reserva $reserva)
     {
-        //
+        $request->validate([
+            'cliente_id' => 'required|exists:clientes,id',
+            'servicio_id' => 'required|exists:servicios,id',
+            'user_id'    => 'required|exists:users,id',
+            'fecha'      => 'required|date|after_or_equal:today',
+            'hora'       => 'required',
+            'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
+        ]);
+
+        $reserva->update($request->all());
+
+        return redirect()->route('reservas.index')->with('success', 'Reserva actualizada con éxito.');
     }
 
     /**
@@ -60,6 +96,7 @@ class ReservaController extends Controller
      */
     public function destroy(Reserva $reserva)
     {
-        //
+        $reserva->delete();
+        return redirect()->route('reservas.index')->with('success', 'Reserva eliminada con éxito.');
     }
 }

@@ -40,6 +40,17 @@
             >
         </div>
 
+		<div>
+    		<label class="block text-gray-700 font-medium mb-1">Duración (minutos)</label>
+    		<input 
+        		type="number" 
+       			name="duracion" 
+        		value="{{ $servicio->duracion }}" 
+        		class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+        		required
+    		>
+		</div>
+
         <div class="flex justify-between items-center">
             <a href="{{ route('servicios.index') }}" 
                class="bg-gray-500 hover:bg-gray-600 text-white font-semibold px-5 py-2 rounded-lg transition duration-200">
