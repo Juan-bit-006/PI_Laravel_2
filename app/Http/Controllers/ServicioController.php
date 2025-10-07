@@ -30,17 +30,7 @@ class ServicioController extends Controller
      */
     public function store(Request $request)
     {
-         $request->validate([
-        'cliente_id' => 'required|exists:clientes,id',
-        'servicio_id' => 'required|exists:servicios,id',
-        'fecha'      => 'required|date',
-        'hora'       => 'required',
-        'estado'     => 'required|string|in:Pendiente,Activa,Completada,Cancelada',
-    ]);
-
-    Reserva::create($request->all());
-
-    return redirect()->route('reservas.index')->with('success', 'Reserva creada con éxito.');
+        
     }
 
     /**
