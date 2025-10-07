@@ -13,6 +13,10 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::resource('clientes', ClienteController::class);
     Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
+    Route::resource('servicios', ServicioController::class);
+
+    // si usas PDF
+    Route::get('servicios-pdf', [\App\Http\Controllers\ServicioController::class, 'pdf'])->name('servicios.pdf');
 });
 
 // CRUD Clientes

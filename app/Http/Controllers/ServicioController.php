@@ -13,6 +13,8 @@ class ServicioController extends Controller
     public function index()
     {
         //
+        $servicios = Servicio::all();
+        return view('servicios.index', compact('servicios'));
     }
 
     /**
@@ -20,7 +22,7 @@ class ServicioController extends Controller
      */
     public function create()
     {
-        //
+        return view('servicios.create');
     }
 
     /**
@@ -28,7 +30,17 @@ class ServicioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $request->validate([
+        'cliente_id' => 'required|exists:clientes,id',
+        'servicio_id' => 'required|exists:servicios,id',
+        'fecha'      => 'required|date',
+        'hora'       => 'required',
+        'estado'     => 'required|string|in:Pendiente,Activa,Completada,Cancelada',
+    ]);
+
+    Reserva::create($request->all());
+
+    return redirect()->route('reservas.index')->with('success', 'Reserva creada con éxito.');
     }
 
     /**
@@ -44,7 +56,7 @@ class ServicioController extends Controller
      */
     public function edit(Servicio $servicio)
     {
-        //
+        return view('servicios.edit', compact('servicios'));
     }
 
     /**
