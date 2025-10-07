@@ -13,7 +13,12 @@ use App\Http\Controllers\ReservaController;
 
 // Página de inicio
 Route::get('/', function () {
-    return view('inicio');
+    return view('welcome');
+})->name('welcome');
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('clientes', ClienteController::class);
+    Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
 });
 
 // Dashboard
