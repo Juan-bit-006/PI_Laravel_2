@@ -7,8 +7,8 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ReservaController;
 
 Route::get('/', function () {
-    return view('home');
-})->name('home');
+    return view('welcome');
+})->name('welcome');
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('clientes', ClienteController::class);
