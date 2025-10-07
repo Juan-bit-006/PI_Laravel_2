@@ -1,3 +1,95 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Centrar formularios */
+.container {
+    max-width: 600px;
+    margin: 30px auto;   /* centra y da espacio arriba/abajo */
+    padding: 20px;
+    background-color: #1f2937; /* gris oscuro */
+    border-radius: 10px;
+}
+
+/* Títulos */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Campos */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #000;
+}
+
+/* Botones generales */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.3s;
+    margin-right: 10px;
+}
+
+/* Botón Guardar */
+.btn-guardar {
+    background-color: #28a745; /* verde */
+    color: white;
+    border: 1px solid #1e7e34;
+}
+.btn-guardar:hover {
+    background-color: #218838;
+}
+
+/* Botón Cancelar */
+.btn-cancelar {
+    background-color: #dc3545; /* rojo */
+    color: white;
+    border: 1px solid #c82333;
+}
+.btn-cancelar:hover {
+    background-color: #c82333;
+}
+
+/* Estilo para la tabla de clientes */
+.table-container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #1f2937;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    color: black;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background: #f4f4f4;
+}
