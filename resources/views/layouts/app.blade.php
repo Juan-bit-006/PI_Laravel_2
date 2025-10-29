@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Alejandra C Peluquería</title>
+        <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,10 +18,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @if (!request()->is('/'))
-    @include('layouts.navigation')
-@endif
-   
+            
 
             <!-- @include('layouts.navigation')-->
 

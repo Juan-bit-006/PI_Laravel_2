@@ -7,16 +7,30 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UserController;
 
-// Ruta pública (invitados)
+//Ruta redireccion al login
+Route::get('/', function () {
+    return redirect()->route('login');
+})->middleware('guest');
+
+
+/*Ruta pública (invitados)
 Route::get('/', function () {
     return view('welcome');
-})->middleware('guest')->name('welcome');
+})->middleware('guest')->name('welcome'); */
 
-// Página principal (solo autenticados)
+// Ruta raíz: redirige al login o al inicio según autenticación
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('login'); // Si está logueado
+    }
+    return redirect()->route('login'); // Si no está logueado
+});
+
+ //Página principal (solo autenticados)
 Route::middleware(['auth'])->group(function () {
     Route::get('/inicio', function () {
         return view('inicio');
-    })->name('inicio');
+    })->name('inicio'); 
 
     Route::resource('clientes', ClienteController::class);
     Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
