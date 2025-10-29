@@ -28,7 +28,6 @@ class ReservaController extends Controller
         $clientes = Cliente::all();
         $servicios = Servicio::all();
         $usuarios = User::all(); // aquí podrías filtrar solo estilistas si usas roles
-
         return view('reservas.create', compact('clientes', 'servicios', 'usuarios'));
     }
 
@@ -68,7 +67,6 @@ class ReservaController extends Controller
         $clientes = Cliente::all();
         $servicios = Servicio::all();
         $usuarios = User::all();
-
         return view('reservas.edit', compact('reserva', 'clientes', 'servicios', 'usuarios'));
     }
 
@@ -81,12 +79,13 @@ class ReservaController extends Controller
             'cliente_id' => 'required|exists:clientes,id',
             'servicio_id' => 'required|exists:servicios,id',
             'user_id'    => 'required|exists:users,id',
-            'fecha'      => 'required|date|after_or_equal:today',
+            'fecha' => 'required|date',
             'hora'       => 'required',
             'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
         ]);
 
-        $reserva->update($request->all());
+        $reserva->update($request->only(['cliente_id', 'servicio_id', 'user_id', 'fecha', 'hora', 'estado']));
+
 
         return redirect()->route('reservas.index')->with('success', 'Reserva actualizada con éxito.');
     }
@@ -99,4 +98,35 @@ class ReservaController extends Controller
         $reserva->delete();
         return redirect()->route('reservas.index')->with('success', 'Reserva eliminada con éxito.');
     }
+    
+    public function exportarPDF()
+    {
+    $reservas = \App\Models\Reserva::with(['cliente', 'servicio', 'user'])->get();
+    $pdf = Pdf::loadView('reservas.pdf', compact('reservas'))
+              ->setPaper('a4', 'landscape');
+
+    return $pdf->download('reservas.pdf');
+    }
+
+    public function searchAjax(Request $request)
+{
+    $query = Reserva::with(['cliente', 'servicio', 'user']);
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+
+        $query->whereHas('cliente', fn($q) => $q->where('nombre', 'like', "%{$search}%"))
+              ->orWhereHas('servicio', fn($q) => $q->where('nombre', 'like', "%{$search}%"))
+              ->orWhereHas('user', fn($q) => $q->where('name', 'like', "%{$search}%"))
+              ->orWhere('fecha', 'like', "%{$search}%");
+    }
+
+    $reservas = $query->get();
+
+    return response()->json([
+        'html' => view('reservas.partials.table', compact('reservas'))->render()
+    ]);
 }
+
+}
+
