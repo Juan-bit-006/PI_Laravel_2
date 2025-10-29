@@ -1,53 +1,45 @@
 
 <?php
-// Permitir POST a la raíz para evitar error 405
-Route::post('/', function () {
-    return view('inicio');
-});
-
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\UserController;
 
-// Página de inicio
+// Ruta pública (invitados)
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->middleware('guest')->name('welcome');
 
+// Página principal (solo autenticados)
 Route::middleware(['auth'])->group(function () {
-    Route::resource('clientes', ClienteController::class)->middleware('auth');
-    Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
-    Route::resource('servicios', ServicioController::class)->middleware('auth');
-    Route::resource('reservas', ReservaController::class)->middleware('auth');
+    Route::get('/inicio', function () {
+        return view('inicio');
+    })->name('inicio');
 
-    // si usas PDF
-    Route::get('servicios-pdf', [\App\Http\Controllers\ServicioController::class, 'pdf'])->name('servicios.pdf');
-});
-
-// Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Rutas protegidas
-Route::middleware(['auth'])->group(function () {
-    // CRUD Clientes
     Route::resource('clientes', ClienteController::class);
     Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
 
-    // CRUD Servicios
     Route::resource('servicios', ServicioController::class);
+    Route::get('servicios-pdf', [ServicioController::class, 'pdf'])->name('servicios.pdf');
 
-    // CRUD Reservas
     Route::resource('reservas', ReservaController::class);
+    Route::get('/reservas/search/ajax', [ReservaController::class, 'searchAjax'])->name('reservas.searchAjax');
+    Route::get('reservas/pdf', [ReservaController::class, 'exportarPDF'])->name('reservas.pdf');
+
+    Route::resource('users', UserController::class);
 
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Dashboard opcional
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Autenticación Breeze
 require __DIR__.'/auth.php';
