@@ -19,26 +19,32 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('clientes.index')" >
+               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
                         {{ __('Cliente') }}
                     </x-nav-link>
                 </div>
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('servicios.index')" >
+                    <x-nav-link :href="route('servicios.index')" :active="request()->routeIs('servicios.*')">
                         {{ __('Servicios') }}
                     </x-nav-link>
                 </div>
+
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('reservas.index')" >
+                    <x-nav-link :href="route('reservas.index')" :active="request()->routeIs('reservas.*')">
                         {{ __('Reservas') }}
                     </x-nav-link>
                 </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('users.index')" >
-                        {{ __('Empleados') }}
-                    </x-nav-link>
-                </div>
+                @auth
+    @if (auth()->user()->role === 'admin')
+        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                 {{ __('Empleados') }}
+            </x-nav-link>
+        </div>
+    @endif
+@endauth
             </div>
             @endif
 

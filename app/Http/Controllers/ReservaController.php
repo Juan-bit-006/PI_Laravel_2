@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Reserva;
 use App\Models\Cliente;
 use App\Models\Servicio;

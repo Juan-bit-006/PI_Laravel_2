@@ -26,7 +26,7 @@ Route::get('/', function () {
     return redirect()->route('login'); // Si no está logueado
 });
 
- //Página principal (solo autenticados)
+ // Página principal (solo autenticados)
 Route::middleware(['auth'])->group(function () {
     Route::get('/inicio', function () {
         return view('inicio');
@@ -36,13 +36,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('clientes-pdf', [ClienteController::class, 'exportPdf'])->name('clientes.pdf');
 
     Route::resource('servicios', ServicioController::class);
-    Route::get('servicios-pdf', [ServicioController::class, 'pdf'])->name('servicios.pdf');
+    Route::get('servicios-pdf', [ServicioController::class, 'exportPdf'])->name('servicios.pdf');
 
+    Route::get('reservas/search/ajax', [ReservaController::class, 'searchAjax'])
+        ->name('reservas.searchAjax');
+
+    Route::get('reservas/exportar/pdf', [ReservaController::class, 'exportarPDF'])
+        ->name('reservas.exportar.pdf');
     Route::resource('reservas', ReservaController::class);
-    Route::get('/reservas/search/ajax', [ReservaController::class, 'searchAjax'])->name('reservas.searchAjax');
-    Route::get('reservas/pdf', [ReservaController::class, 'exportarPDF'])->name('reservas.pdf');
 
-    Route::resource('users', UserController::class);
+//  Solo los usuarios con rol ADMIN pueden acceder a estas rutas
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::resource('users', UserController::class)->except(['show']);
+    Route::get('users/pdf', [UserController::class, 'exportPdf'])->name('users.pdf');
+});
+
 
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
