@@ -22,7 +22,7 @@ Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
 
 ### 1️⃣ Clonar el repositorio
 
-git clone https://github.com/tu_usuario/PI_Laravel_2.git
+git clone https://github.com/Juan-bit-006/PI_Laravel_2.git
 cd PI_Laravel_2
 
 
