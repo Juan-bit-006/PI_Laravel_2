@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -65,4 +66,15 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Empleado eliminado con éxito.');
     }
+
+    public function exportPdf()
+    {
+        $users = User::all();
+
+        $pdf = Pdf::loadView('users.pdf', compact('users'))
+              ->setPaper('a4', 'portrait');
+
+        return $pdf->download('reporte_empleados_' . now()->format('Ymd_His') . '.pdf');
+}
+
 }

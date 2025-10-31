@@ -14,6 +14,12 @@
                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
                     Nuevo Empleado
                 </a>
+
+                <a href="{{ route('users.pdf') }}" 
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-1">
+                        <span>Exportar PDF</span>
+                </a>
+
             </div>
         </div>
 

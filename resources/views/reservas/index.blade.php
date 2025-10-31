@@ -19,7 +19,7 @@
                     Nueva Reserva
                 </a>
 
-                <a href="{{ route('reservas.pdf') }}" 
+                <a href="{{ route('reservas.exportar.pdf') }}" 
                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
                     Exportar PDF
                 </a>

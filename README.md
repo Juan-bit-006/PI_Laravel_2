@@ -1,61 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💇‍♀️ Sistema de Reservas - Peluquería Alejandra C
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es un sistema de gestión y reservas desarrollado con **Laravel**, que permite administrar clientes, empleados, servicios y reservas de una peluquería.  
+Incluye funcionalidades de autenticación, roles, exportación de datos en PDF y búsquedas dinámicas con AJAX.
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# ⚙️ Instalación del Proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Requisitos previos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:
 
-## Learning Laravel
+- PHP 8.1 o superior  
+- Composer  
+- MySQL  
+- Node.js y npm  
+- Git
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🚀 Pasos para instalar el sistema
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1️⃣ Clonar el repositorio
 
-## Laravel Sponsors
+git clone https://github.com/tu_usuario/PI_Laravel_2.git
+cd PI_Laravel_2
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+### 2️⃣ Crear y configurar el archivo `.env`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Edita el archivo `.env` con tus valores locales (puedes hacerlo con tu editor de texto preferido):
 
-## Code of Conduct
+APP_NAME="Peluquería Alejandra C"
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+APP_ENV=local
 
-## Security Vulnerabilities
+APP_KEY=
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+APP_DEBUG=true
 
-## License
+APP_URL=http://127.0.0.1:8000
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#
+
+
+DB_CONNECTION=mysql
+
+DB_HOST=127.0.0.1
+
+DB_PORT=3305
+
+DB_DATABASE=peluqueria
+
+DB_USERNAME=root
+
+DB_PASSWORD=
+
+
+
+---
+
+### 3️⃣ Instalar dependencias de Laravel
+- composer install
+
+---
+
+### 4️⃣ Instalar dependencias de Node 
+- npm install
+- npm run dev
+
+---
+
+### 5️⃣ Generar la clave de aplicación
+- php artisan key:generate
+
+---
+
+### 6️⃣ Ejecutar las migraciones de la base de datos
+- php artisan migrate
+
+## Creacion de Usuario desde php artisn Tinker:
+php artisan tinker
+
+    use App\Models\User::create([
+    
+    'name' => 'Admin',
+    
+    'email' => 'admin@peluqueria.com',
+   
+    'password' => $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi, // Eso es contraseña 'password'
+    
+    'role' => 'admin',
+     ]);
+
+---
+
+### 7️⃣ Levantar el servidor local
+- php artisan serve
+
+Una vez iniciado, abre en tu navegador:  
+👉 [http://127.0.0.1:8000](http://127.0.0.1:8000)
+
+---
+
+## 💇‍♀️ Proyecto: Peluquería Alejandra C
+
+Este sistema de gestión permite administrar citas, clientes y servicios de la peluquería de forma sencilla y eficiente.
+
+## Instalar DomPDF para exportar a PDF
+- composer require barryvdh/laravel-dompdf
+
+## Instalar Livewire (interfaz reactiva)
+- composer require livewire/livewire
+
+## Instalar Breeze (sistema de autenticación simple)
+- composer require laravel/breeze --dev
+- php artisan breeze:install
+
+## Instalar Tinker (consola interactiva)
+- composer require laravel/tinker

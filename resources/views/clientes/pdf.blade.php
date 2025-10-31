@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <title>Clientes</title>
+    <meta charset="UTF-8">
+    <title>Reporte de Clientes</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #333; }
+        h2 { text-align: center; color: #047857; margin-bottom: 20px; } /* verde elegante */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #999; padding: 8px 5px; text-align: center; }
+        th { background-color: #f0fdf4; color: #065f46; } /* verde claro */
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        footer { text-align: center; margin-top: 20px; font-size: 10px; color: #666; }
     </style>
 </head>
 <body>
-    <h1>Listado de Clientes</h1>
+    <h2>Reporte de Clientes - Peluquería Alejandra C</h2>
+
     <table>
         <thead>
             <tr>
@@ -39,5 +36,9 @@
             @endforeach
         </tbody>
     </table>
+
+    <footer>
+        Generado automáticamente el {{ now()->format('d/m/Y H:i') }}
+    </footer>
 </body>
 </html>
