@@ -43,13 +43,28 @@ class ReservaController extends Controller
         'servicio_id' => 'required|exists:servicios,id',
         'user_id'    => 'required|exists:users,id',
         'fecha'      => 'required|date|after_or_equal:today',
-        'hora'       => 'required',
+        'hora'       => 'required', //|date_format:H:i
         'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
     ]);
 
+    //  Verificar si el empleado ya tiene una reserva en la misma fecha y hora
+    $reservaExistente = Reserva::where('user_id', $request->user_id)
+        ->where('fecha', $request->fecha)
+        ->where('hora', $request->hora)
+        ->whereIn('estado', ['pendiente', 'confirmada']) // solo reservas activas
+        ->exists();
+
+    if ($reservaExistente) {
+        return back()->withErrors([
+            'error' => 'El empleado ya tiene una reserva en esa franja horaria.'
+        ])->withInput();
+    }
+
+    //  Crear la reserva si no hay conflicto
     Reserva::create($request->all());
 
-    return redirect()->route('reservas.index')->with('success', 'Reserva creada con éxito.');
+    return redirect()->route('reservas.index')
+        ->with('success', 'Reserva creada con éxito.');
     }
 
     /**
@@ -77,18 +92,34 @@ class ReservaController extends Controller
     public function update(Request $request, Reserva $reserva)
     {
         $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'servicio_id' => 'required|exists:servicios,id',
-            'user_id'    => 'required|exists:users,id',
-            'fecha' => 'required|date',
-            'hora'       => 'required',
-            'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
-        ]);
+        'cliente_id' => 'required|exists:clientes,id',
+        'servicio_id' => 'required|exists:servicios,id',
+        'user_id'    => 'required|exists:users,id',
+        'fecha'      => 'required|date|after_or_equal:today',
+        'hora'       => 'required', //|date_format:H:i
+        'estado'     => 'required|in:pendiente,confirmada,completada,cancelada',
+    ]);
 
-        $reserva->update($request->only(['cliente_id', 'servicio_id', 'user_id', 'fecha', 'hora', 'estado']));
+    //  Validar si existe otra reserva con mismo user, fecha y hora
+    $conflicto = Reserva::where('user_id', $request->user_id)
+        ->where('fecha', $request->fecha)
+        ->where('hora', $request->hora)
+        ->whereIn('estado', ['pendiente', 'confirmada'])
+        ->where('id', '!=', $reserva->id) // ignorar la reserva actual
+        ->exists();
 
+    if ($conflicto) {
+        return back()->withErrors([
+            'error' => 'El empleado ya tiene una reserva en ese horario.'
+        ])->withInput();
+    }
 
-        return redirect()->route('reservas.index')->with('success', 'Reserva actualizada con éxito.');
+    $reserva->update($request->only([
+        'cliente_id', 'servicio_id', 'user_id', 'fecha', 'hora', 'estado'
+    ]));
+
+    return redirect()->route('reservas.index')
+        ->with('success', 'Reserva actualizada con éxito.');
     }
 
     /**

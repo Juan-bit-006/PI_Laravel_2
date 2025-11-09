@@ -1,11 +1,17 @@
 
 <?php
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\UserController;
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 //Ruta redireccion al login
 Route::get('/', function () {
@@ -59,9 +65,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 // Dashboard opcional
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Autenticación Breeze
 require __DIR__.'/auth.php';

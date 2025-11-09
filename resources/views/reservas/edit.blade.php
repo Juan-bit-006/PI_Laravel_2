@@ -5,6 +5,22 @@
     <div class="bg-white rounded-2xl shadow-lg w-11/12 md:w-2/4 p-6">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Editar Reserva</h2>
 
+        @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        @if (session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+        @endif
+
         <form action="{{ route('reservas.update', $reserva->id) }}" method="POST" class="space-y-5">
             @csrf
             @method('PUT')
@@ -26,8 +42,8 @@
                 <select name="servicio_id" id="servicio_id" required
                         class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     @foreach($servicios as $servicio)
-                        <option value="{{ $servicio->id }}" {{ $servicio->id == $reserva->servicio_id ? 'selected' : '' }}>
-                            {{ $servicio->nombre }}
+                        <option value="{{ $servicio->id }}">
+                            {{ $servicio->nombre }} - {{ $servicio->descripcion }}
                         </option>
                     @endforeach
                 </select>
