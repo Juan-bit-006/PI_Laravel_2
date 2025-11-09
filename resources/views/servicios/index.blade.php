@@ -27,54 +27,59 @@
 
         {{-- TABLA --}}
         <div id="table-container">
-            @if($servicios->isEmpty())
-                <div class="text-center text-gray-600 py-6">
-                    No hay servicios registrados.
-                </div>
-            @else
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-200 text-center">
-                        <thead class="bg-gray-100">
-                            <tr class="text-gray-700 uppercase text-sm">
-                                <th class="py-3 px-4 border-b">ID</th>
-                                <th class="py-3 px-4 border-b">Nombre</th>
-                                <th class="py-3 px-4 border-b">Descripción</th>
-                                <th class="py-3 px-4 border-b">Precio</th>
-                                <th class="py-3 px-4 border-b">Duración</th>
-                                <th class="py-3 px-4 border-b">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-servicios" class="bg-white">
-                            @foreach ($servicios as $servicio)
-                                <tr class="hover:bg-gray-50">
-                                    <td class="py-3 px-4 border-b">{{ $servicio->id }}</td>
-                                    <td class="py-3 px-4 border-b">{{ $servicio->nombre }}</td>
-                                    <td class="py-3 px-4 border-b">{{ $servicio->descripcion }}</td>
-                                    <td class="py-3 px-4 border-b">${{ number_format($servicio->precio, 0, ',', '.') }}</td>
-                                    <td class="py-3 px-4 border-b">{{ $servicio->duracion }}</td>
-                                    <td class="py-3 px-4 border-b">
-                                        <div class="flex justify-center space-x-2">
-                                            <a href="{{ route('servicios.edit', $servicio->id) }}" 
-                                               class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm transition">
-                                               Editar
-                                            </a>
-                                            <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" onsubmit="return confirm('¿Eliminar este servicio?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" 
-                                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition">
-                                                    Eliminar
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
+    @if($servicios->isEmpty())
+        <div class="text-center text-gray-600 py-6">
+            No hay servicios registrados.
         </div>
+    @else
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-200 text-center">
+                <thead class="bg-gray-100">
+                    <tr class="text-gray-700 uppercase text-sm">
+                        <th class="py-3 px-4 border-b">ID</th>
+                        <th class="py-3 px-4 border-b">Nombre</th>
+                        <th class="py-3 px-4 border-b">Descripción</th>
+                        <th class="py-3 px-4 border-b">Precio</th>
+                        <th class="py-3 px-4 border-b">Duración</th>
+                        @if(auth()->user()->role === 'admin')
+                            <th class="py-3 px-4 border-b">Acciones</th>
+                        @endif
+                    </tr>
+                </thead>
+                <tbody id="tabla-servicios" class="bg-white">
+                    @foreach ($servicios as $servicio)
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 border-b">{{ $servicio->id }}</td>
+                            <td class="py-3 px-4 border-b">{{ $servicio->nombre }}</td>
+                            <td class="py-3 px-4 border-b">{{ $servicio->descripcion }}</td>
+                            <td class="py-3 px-4 border-b">${{ number_format($servicio->precio, 0, ',', '.') }}</td>
+                            <td class="py-3 px-4 border-b">{{ $servicio->duracion }}</td>
+                            
+                            {{-- Acciones solo para administradores --}}
+                            @if(auth()->user()->role === 'admin')
+                                <td class="py-3 px-4 border-b">
+                                    <div class="flex justify-center space-x-2">
+                                        <a href="{{ route('servicios.edit', $servicio->id) }}" 
+                                           class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-md text-sm transition">
+                                           Editar
+                                        </a>
+                                        <form action="{{ route('servicios.destroy', $servicio->id) }}" method="POST" onsubmit="return confirm('¿Eliminar este servicio?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition">
+                                                Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
     </div>
 </div>
 

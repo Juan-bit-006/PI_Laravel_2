@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 
 class ServicioController extends Controller
 {
+
+    public function __construct()
+    {
+    // Todos deben estar autenticados
+    $this->middleware('auth');
+
+    // Solo el admin puede crear, editar o eliminar
+    $this->middleware('isAdmin')->except(['index']);
+    }
+
     /**
      * Mostrar listado de servicios
      */
