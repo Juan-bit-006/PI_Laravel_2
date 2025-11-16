@@ -37,7 +37,10 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
+
+
+    //aut original 
+   /*  public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
@@ -50,7 +53,36 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+    } */
+
+    public function authenticate(): void
+{
+    $this->ensureIsNotRateLimited();
+
+    // Buscar el usuario por email
+    $user = \App\Models\User::where('email', $this->email)->first();
+
+    // Validar si está inactivo (0)
+    if ($user && $user->estado_login == 0) {
+        throw ValidationException::withMessages([
+            'email' => 'Este usuario está inactivo y no puede iniciar sesión.',
+        ]);
     }
+
+    // Intentar autenticación
+    if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'), // credenciales incorrectas
+        ]);
+    }
+
+    RateLimiter::clear($this->throttleKey());
+}
+
+
+
 
     /**
      * Ensure the login request is not rate limited.
