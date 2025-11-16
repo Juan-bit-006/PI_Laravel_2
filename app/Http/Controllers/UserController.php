@@ -23,20 +23,22 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'role' => 'required|string',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|unique:users,email',
+            'password'     => 'required|min:6',
+            'role'         => 'required|string',
+            'estado_login' => 'required|boolean',
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'name'         => $request->name,
+            'email'        => $request->email,
+            'password'     => Hash::make($request->password),
+            'role'         => $request->role,
+            'estado_login' => $request->estado_login,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Empleado creado con éxito.');
+        return redirect()->route('users.index')->with('success', 'Usuario creado con éxito.');
     }
 
     public function edit(User $user)
@@ -47,24 +49,31 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|string',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|unique:users,email,' . $user->id,
+            'role'         => 'required|string',
+            'estado_login' => 'required|boolean',
         ]);
 
-        $user->update($request->only(['name', 'email', 'role']));
+        $user->name         = $request->name;
+        $user->email        = $request->email;
+        $user->role         = $request->role;
+        $user->estado_login = $request->estado_login;
 
         if ($request->filled('password')) {
-            $user->update(['password' => Hash::make($request->password)]);
+            $user->password = Hash::make($request->password);
         }
 
-        return redirect()->route('users.index')->with('success', 'Empleado actualizado correctamente.');
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'Usuario actualizado correctamente.');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'Empleado eliminado con éxito.');
+
+        return redirect()->route('users.index')->with('success', 'Usuario eliminado con éxito.');
     }
 
     public function exportPdf()
@@ -72,9 +81,8 @@ class UserController extends Controller
         $users = User::all();
 
         $pdf = Pdf::loadView('users.pdf', compact('users'))
-              ->setPaper('a4', 'portrait');
+                  ->setPaper('a4', 'portrait');
 
-        return $pdf->download('reporte_empleados_' . now()->format('Ymd_His') . '.pdf');
-}
-
+        return $pdf->download('reporte_logins_' . now()->format('Ymd_His') . '.pdf');
+    }
 }

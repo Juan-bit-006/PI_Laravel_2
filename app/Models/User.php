@@ -22,7 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'estado_login',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,4 +53,11 @@ class User extends Authenticatable
 {
     return $this->hasMany(Reserva::class);
 }
+
+public function empleado()
+{
+    return $this->hasOne(Empleado::class, 'user_id');
+}
+
+
 }
