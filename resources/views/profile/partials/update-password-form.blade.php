@@ -1,11 +1,7 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
+        <p class="mt-1 text-sm text-gray-400">
+            Actualizar Contraseña
         </p>
     </header>
 
@@ -13,35 +9,44 @@
         @csrf
         @method('put')
 
+        {{-- Contraseña Actual --}}
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+            <x-input-label for="current_password" :value="__('Contraseña Actual')" class="text-gray-300" />
+
+            <input id="current_password" name="current_password" type="password"
+                class="mt-1 block w-full bg-[#0f1629] border border-yellow-600/30 text-gray-200
+                       focus:border-yellow-500 focus:ring-yellow-500 rounded-lg"
+                autocomplete="current-password" />
         </div>
 
+        {{-- Nueva Contraseña --}}
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+            <x-input-label for="password" :value="__('Nueva Contraseña')" class="text-gray-300" />
+
+            <input id="password" name="password" type="password"
+                class="mt-1 block w-full bg-[#0f1629] border border-yellow-600/30 text-gray-200
+                       focus:border-yellow-500 focus:ring-yellow-500 rounded-lg"
+                autocomplete="new-password" />
         </div>
 
+        {{-- Confirmar Contraseña --}}
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+            <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')" class="text-gray-300" />
+
+            <input id="password_confirmation" name="password_confirmation" type="password"
+                class="mt-1 block w-full bg-[#0f1629] border border-yellow-600/30 text-gray-200
+                       focus:border-yellow-500 focus:ring-yellow-500 rounded-lg"
+                autocomplete="new-password" />
         </div>
 
+        {{-- Botón --}}
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <button class="bg-yellow-600 hover:bg-yellow-700 text-black font-semibold px-4 py-2 rounded-lg">
+                Guardar Contraseña
+            </button>
 
             @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                <p class="text-sm text-green-400">Contraseña actualizada correctamente.</p>
             @endif
         </div>
     </form>

@@ -25,7 +25,7 @@
 
         <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
             <h2 class="text-lg font-semibold text-gray-700">Reservas próximas (1 hora)</h2>
-            <p class="text-4xl font-bold text-indigo-600 mt-3">{{ $reservasProximas }}</p>
+            <p class="text-4xl font-bold text-indigo-600 mt-3">{{ $proximasReservas->count() }}</p>
         </div>
 
         <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
@@ -34,11 +34,13 @@
         </div>
     </div>
 
-    {{-- Reservas próximas --}}
-    <div class="bg-white shadow rounded-2xl p-8">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-             Reservas próximas 
-        </h2>
+    <div class="bg-indigo-50 border border-indigo-200 p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+        <h2 class="text-lg font-semibold text-gray-700">Reservas próximas (1 hora)</h2>
+        <p class="text-4xl font-bold text-indigo-600 mt-3">
+        {{ $proximasReservas->count() }}
+        </p>
+    </div>
+
 
         <table class="min-w-full border border-gray-200 rounded-lg">
             <thead class="bg-gray-100">

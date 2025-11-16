@@ -2,57 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reserva;
-use App\Models\User;
+use App\Models\Servicio;
+use App\Models\Empleado;
 use App\Models\Cliente;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $hoy = Carbon::today();
+        $hoy = Carbon::today()->toDateString();
+        $ahora = Carbon::now();
 
         // Reservas del día
         $reservasHoy = Reserva::whereDate('fecha', $hoy)->count();
 
         // Servicios completados esta semana
         $serviciosSemana = Reserva::whereBetween('fecha', [
-                $hoy->copy()->startOfWeek(),
-                $hoy->copy()->endOfWeek()
-            ])
-            ->where('estado', 'completada')
-            ->count();
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek()
+            ])->count();
 
-        // Reservas próximas (dentro de la próxima hora)
-        $ahora = Carbon::now();
-        $enUnaHora = $ahora->copy()->addHour();
-
-        $proximasReservas = Reserva::with(['cliente', 'servicio', 'user'])
-            ->whereDate('fecha', $hoy)
-            ->whereBetween('hora', [$ahora->format('H:i:s'), $enUnaHora->format('H:i:s')])
-            ->orderBy('hora')
+        // Reservas próximas en la próxima hora
+        $proximasReservas = Reserva::whereDate('fecha', $hoy)
+            ->whereTime('hora', '>=', $ahora->format('H:i'))
+            ->whereTime('hora', '<=', $ahora->copy()->addHour()->format('H:i'))
+            ->with(['cliente','servicio','user'])
             ->get();
 
-        $reservasProximas = $proximasReservas->count();
+        // Empleados disponibles
+        $empleadosDisponibles = Empleado::where('estado_empleado', 1)->count();
 
-        // Empleados disponibles (sin reserva en la próxima hora)
-        $empleadosOcupados = $proximasReservas->pluck('user_id');
-        $empleadosDisponibles = User::whereNotIn('id', $empleadosOcupados)->count();
-
-        // Seguimiento de clientes frecuentes
+        // Clientes frecuentes
         $clientesFrecuentes = Cliente::withCount('reservas')
-            ->orderByDesc('reservas_count')
-            ->take(5)
+            ->orderBy('reservas_count', 'desc')
+            ->limit(5)
             ->get();
 
         return view('dashboard.index', compact(
             'reservasHoy',
             'serviciosSemana',
-            'reservasProximas',
-            'empleadosDisponibles',
             'proximasReservas',
+            'empleadosDisponibles',
             'clientesFrecuentes'
         ));
     }

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Logins</title>
+    <title>Reporte de Empleados</title>
     <style>
         body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #333; }
         h2 { text-align: center; color: #047857; margin-bottom: 20px; }
@@ -15,28 +15,32 @@
 </head>
 <body>
 
-    <h2>Reporte de Logins – Peluquería Alejandra C</h2>
+    <h2>Reporte de Empleados – Peluquería Alejandra C</h2>
 
     <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Correo</th>
-                <th>Rol</th>
+                <th>Apellido</th>
+                <th>Teléfono</th>
+                <th>Especialidad</th>
+                <th>Turno</th>
                 <th>Estado</th>
+                <th>Login Asignado</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($empleados as $empleado)
             <tr>
-                <td>{{ $user->id }}</td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ ucfirst($user->role) }}</td>
-                <td>
-                    {{ $user->estado_login == 1 ? 'Activo' : 'Inactivo' }}
-                </td>
+                <td>{{ $empleado->id }}</td>
+                <td>{{ $empleado->nombre }}</td>
+                <td>{{ $empleado->apellido }}</td>
+                <td>{{ $empleado->telefono }}</td>
+                <td>{{ $empleado->especialidad }}</td>
+                <td>{{ $empleado->turno }}</td>
+                <td>{{ $empleado->estado_empleado ? 'Activo' : 'Inactivo' }}</td>
+                <td>{{ $empleado->login ? $empleado->login->email : 'Sin asignar' }}</td>
             </tr>
             @endforeach
         </tbody>
